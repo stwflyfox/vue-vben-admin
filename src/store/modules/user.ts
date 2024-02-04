@@ -7,7 +7,7 @@ import { PageEnum } from '@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '@/utils/auth';
 import { GetUserInfoModel, LoginParams } from '@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi } from '@/api/sys/user';
+import { doLogout, getUserInfo } from '@/api/sys/user';
 import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import { router } from '@/router';
@@ -16,7 +16,14 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 import { isArray } from '@/utils/is';
 import { h } from 'vue';
-import { setloginInfo, removeloginInfo, setToken, getToken, clearToken } from '@/utils/util';
+import {
+  setloginInfo,
+  getlogininfo,
+  removeloginInfo,
+  setToken,
+  getToken,
+  clearToken,
+} from '@/utils/util';
 import { login as userLogin } from '@/services/user';
 
 interface UserState {
@@ -91,7 +98,7 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        const { goHome = true, mode, ...loginParams } = params;
+        const { goHome = true, ...loginParams } = params;
         const result = await userLogin(loginParams);
 
         if (!result.success) {
@@ -102,11 +109,22 @@ export const useUserStore = defineStore({
           setToken(access_token);
           setloginInfo(loginInfo);
           debugger;
-          const data = await loginApi(loginParams, mode);
-          const { token } = data;
-
-          // save token
-          this.setToken(token);
+          const userInfo = {
+            userId: loginInfo.UserID,
+            username: loginInfo.Account,
+            realName: loginInfo.Name,
+            avatar: '',
+            desc: loginInfo.Name,
+            homePath: '/dashboard/workbench',
+            roles: [
+              {
+                roleName: 'Super Admin',
+                value: 'super',
+              },
+            ],
+          };
+          this.setUserInfo(userInfo);
+          this.setToken(access_token);
 
           return this.afterLoginAction(goHome);
         }
@@ -116,9 +134,7 @@ export const useUserStore = defineStore({
     },
     async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
       if (!getToken()) return null;
-      // get user info
-      const userInfo = await this.getUserInfoAction();
-
+      const userInfo = this.getUserInfo;
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
@@ -132,13 +148,15 @@ export const useUserStore = defineStore({
           router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
           permissionStore.setDynamicAddedRoute(true);
         }
-        goHome && (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
+        // goHome && (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
+        goHome && (await router.replace(PageEnum.BASE_HOME));
       }
       return userInfo;
     },
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo();
+      debugger;
+      const userInfo = this.getUserInfo;
       const { roles = [] } = userInfo;
       if (isArray(roles)) {
         const roleList = roles.map((item) => item.value) as RoleEnum[];
