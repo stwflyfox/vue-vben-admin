@@ -1,5 +1,20 @@
 <template>
-  <LoginFormTitle v-show="getShow" class="enter-x" style="width: 100%; text-align: center" />
+  <a-flex
+    justify="center"
+    style="
+      width: 100%;
+      height: 80px;
+      color: white;
+      font-size: 32px;
+      line-height: 80px;
+      text-align: center;
+    "
+  >
+    <div>
+      <img src="../../../assets/images/logo.png" width="40" height="40" />
+      {{ title }}
+    </div>
+  </a-flex>
   <Form
     class="p-4 enter-x"
     :model="formData"
@@ -77,13 +92,13 @@
   </Form>
 </template>
 <script lang="ts" setup>
+  import { useGlobSetting } from '@/hooks/setting';
+
   import { reactive, ref, unref, computed } from 'vue';
 
   import { UserOutlined, LockOutlined, GlobalOutlined } from '@ant-design/icons-vue';
 
   import { Form, Input, Row, Col, Button } from 'ant-design-vue';
-
-  import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '@/hooks/web/useI18n';
   import { useMessage } from '@/hooks/web/useMessage';
@@ -104,7 +119,9 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
-  const { setLoginState, getLoginState } = useLoginState();
+  const { title } = useGlobSetting();
+
+  const { getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();

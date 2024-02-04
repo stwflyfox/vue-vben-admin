@@ -91,7 +91,6 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        debugger;
         const { goHome = true, mode, ...loginParams } = params;
         const result = await userLogin(loginParams);
 
@@ -102,6 +101,7 @@ export const useUserStore = defineStore({
           // save token
           setToken(access_token);
           setloginInfo(loginInfo);
+          debugger;
           const data = await loginApi(loginParams, mode);
           const { token } = data;
 
@@ -154,13 +154,13 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     async logout(goLogin = false) {
-      if (this.getToken) {
-        try {
-          await doLogout();
-        } catch {
-          console.log('注销Token失败');
-        }
-      }
+      // if (this.getToken) {
+      //   try {
+      //     await doLogout();
+      //   } catch {
+      //     console.log('注销Token失败');
+      //   }
+      // }
       this.setToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
