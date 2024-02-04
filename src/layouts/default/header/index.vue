@@ -33,7 +33,7 @@
 
     <!-- action  -->
     <div :class="`${prefixCls}-action`">
-      <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
+      <!-- <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" /> -->
 
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
@@ -41,16 +41,16 @@
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
-      <AppLocalePicker
+      <!-- <AppLocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
         :showText="false"
         :class="`${prefixCls}-action__item`"
-      />
+      /> -->
 
       <UserDropDown :theme="getHeaderTheme" />
 
-      <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
+      <!-- <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" /> -->
     </div>
   </Layout.Header>
 </template>

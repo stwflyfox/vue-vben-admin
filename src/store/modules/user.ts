@@ -128,7 +128,6 @@ export const useUserStore = defineStore({
       if (!getToken()) return null;
       const userInfo = this.getUserInfo;
       const sessionTimeout = this.sessionTimeout;
-      debugger;
       const tabStore = useMultipleTabStore();
       tabStore.resetState();
       if (sessionTimeout) {
