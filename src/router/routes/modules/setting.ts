@@ -22,6 +22,24 @@ const about: AppRouteModule = {
         title: '业务表',
       },
     },
+    {
+      path: 'applibrary',
+      name: 'applibrary',
+      component: () => import('@/views/setting/Applibrary.vue'),
+      meta: {
+        title: '应用程序',
+      },
+    },
+    {
+      path: 'program',
+      name: 'program',
+      component: () => import('@/views/setting/Program.vue'),
+      meta: {
+        title: '应用程序编辑',
+        hideBreadcrumb: true,
+        hideMenu: true,
+      },
+    },
   ],
 };
 

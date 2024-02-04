@@ -67,6 +67,9 @@
     }
   },
   "dependencies": {  
+    "@opentiny/vue": "^3.13",
+    "@opentiny/vue-theme": "^3.13",
+    "@opentiny/vue-icon": "^3.11.0",    
     "js-md5": "^0.8.3",
     "linq": "^4.0.2",
     "@ant-design/icons-vue": "^7.0.1",
@@ -102,7 +105,7 @@
     "vue-json-pretty": "^2.3.0",
     "vue-router": "^4.2.5",
     "vue-types": "^5.1.1",
-    "vuedraggable": "^4.1.0"
+    "vue-draggable-next": "^2.2.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.4",

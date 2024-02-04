@@ -15,6 +15,17 @@ import { router, setupRouter } from '@/router';
 import { setupRouterGuard } from '@/router/guard';
 import { setupStore } from '@/store';
 
+// 引入 @opentiny/vue 组件
+import TinyVue from '@opentiny/vue';
+
+// import TinyThemeTool from '@opentiny/vue-theme/theme-tool'
+
+// import { tinyAuroraTheme } from '@opentiny/vue-theme/theme'
+
+// 导入主题
+
+// new TinyThemeTool(tinyAuroraTheme, 'tinyStyleSheetId') // 初始化主题
+
 import App from './App.vue';
 
 async function bootstrap() {
@@ -56,6 +67,8 @@ async function bootstrap() {
 
   // https://next.router.vuejs.org/api/#isready
   // await router.isReady();
+
+  app.use(TinyVue);
 
   app.mount('#app');
 }
