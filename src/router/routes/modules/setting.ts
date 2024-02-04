@@ -11,7 +11,7 @@ const about: AppRouteModule = {
     hideChildrenInMenu: false,
     icon: 'ion:settings-outline',
     title: '系统设置',
-    orderNo: 11,
+    orderNo: 20,
   },
   children: [
     {

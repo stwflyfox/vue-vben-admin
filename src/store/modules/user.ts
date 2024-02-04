@@ -7,7 +7,6 @@ import { PageEnum } from '@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '@/utils/auth';
 import { GetUserInfoModel, LoginParams } from '@/api/sys/model/userModel';
-import { doLogout, getUserInfo } from '@/api/sys/user';
 import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import { router } from '@/router';
@@ -16,14 +15,8 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 import { isArray } from '@/utils/is';
 import { h } from 'vue';
-import {
-  setloginInfo,
-  getlogininfo,
-  removeloginInfo,
-  setToken,
-  getToken,
-  clearToken,
-} from '@/utils/util';
+import { useMultipleTabStore } from '@/store/modules/multipleTab';
+import { setloginInfo, removeloginInfo, setToken, getToken, clearToken } from '@/utils/util';
 import { login as userLogin } from '@/services/user';
 
 interface UserState {
@@ -98,7 +91,7 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserInfoModel | null> {
       try {
-        const { goHome = true, ...loginParams } = params;
+        const { ...loginParams } = params;
         const result = await userLogin(loginParams);
 
         if (!result.success) {
@@ -108,7 +101,6 @@ export const useUserStore = defineStore({
           // save token
           setToken(access_token);
           setloginInfo(loginInfo);
-          debugger;
           const userInfo = {
             userId: loginInfo.UserID,
             username: loginInfo.Account,
@@ -126,16 +118,19 @@ export const useUserStore = defineStore({
           this.setUserInfo(userInfo);
           this.setToken(access_token);
 
-          return this.afterLoginAction(goHome);
+          return this.afterLoginAction();
         }
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(): Promise<GetUserInfoModel | null> {
       if (!getToken()) return null;
       const userInfo = this.getUserInfo;
       const sessionTimeout = this.sessionTimeout;
+      debugger;
+      const tabStore = useMultipleTabStore();
+      tabStore.resetState();
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
@@ -149,7 +144,7 @@ export const useUserStore = defineStore({
           permissionStore.setDynamicAddedRoute(true);
         }
         // goHome && (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
-        goHome && (await router.replace(PageEnum.BASE_HOME));
+        await router.replace(PageEnum.BASE_HOME);
       }
       return userInfo;
     },
