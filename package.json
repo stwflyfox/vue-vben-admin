@@ -80,7 +80,6 @@
     "@zxcvbn-ts/core": "^3.0.4",
     "ant-design-vue": "^4.0.8",
     "axios": "^1.6.4",
-    "codemirror": "^5.65.16",
     "cropperjs": "^1.6.1",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
@@ -92,9 +91,7 @@
     "nprogress": "^0.2.0",
     "path-to-regexp": "^6.2.1",
     "pinia": "2.1.7",
-    "pinia-plugin-persistedstate": "^3.2.1",
-    "print-js": "^1.6.0",
-    "qrcode": "^1.5.3",
+    "pinia-plugin-persistedstate": "^3.2.1",  
     "qs": "^6.11.2",
     "resize-observer-polyfill": "^1.5.1",
     "showdown": "^2.1.0",
@@ -107,11 +104,7 @@
     "vue-json-pretty": "^2.3.0",
     "vue-router": "^4.2.5",
     "vue-types": "^5.1.1",
-    "vuedraggable": "^4.1.0",
-    "vxe-table": "^4.5.17",
-    "vxe-table-plugin-export-xlsx": "^3.1.0",
-    "xe-utils": "^3.5.14",
-    "xlsx": "^0.18.5"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.4",
