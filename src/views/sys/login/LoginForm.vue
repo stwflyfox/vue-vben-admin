@@ -1,5 +1,5 @@
 <template>
-  <LoginFormTitle v-show="getShow" class="enter-x" />
+  <LoginFormTitle v-show="getShow" class="enter-x" style="width: 100%; text-align: center" />
   <Form
     class="p-4 enter-x"
     :model="formData"
@@ -8,13 +8,29 @@
     v-show="getShow"
     @keypress.enter="handleLogin"
   >
+    <FormItem name="company" class="enter-x">
+      <Input
+        size="large"
+        v-model:value="formData.company"
+        :placeholder="'公司码'"
+        class="fix-auto-fill"
+      >
+        <template #prefix>
+          <GlobalOutlined />
+        </template>
+      </Input>
+    </FormItem>
     <FormItem name="account" class="enter-x">
       <Input
         size="large"
         v-model:value="formData.account"
         :placeholder="t('sys.login.userName')"
         class="fix-auto-fill"
-      />
+      >
+        <template #prefix>
+          <user-outlined />
+        </template>
+      </Input>
     </FormItem>
     <FormItem name="password" class="enter-x">
       <InputPassword
@@ -22,55 +38,34 @@
         visibilityToggle
         v-model:value="formData.password"
         :placeholder="t('sys.login.password')"
-      />
+      >
+        <template #prefix>
+          <LockOutlined />
+        </template>
+      </InputPassword>
     </FormItem>
-
-    <ARow class="enter-x">
-      <ACol :span="12">
-        <FormItem>
-          <!-- No logic, you need to deal with it yourself -->
-          <Checkbox v-model:checked="rememberMe" size="small">
-            {{ t('sys.login.rememberMe') }}
-          </Checkbox>
-        </FormItem>
-      </ACol>
-      <ACol :span="12">
-        <FormItem :style="{ 'text-align': 'right' }">
-          <!-- No logic, you need to deal with it yourself -->
-          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
-            {{ t('sys.login.forgetPassword') }}
-          </Button>
-        </FormItem>
-      </ACol>
-    </ARow>
 
     <FormItem class="enter-x">
-      <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
+      <Button
+        type="primary"
+        style="background: orange"
+        size="large"
+        block
+        @click="handleLogin"
+        :loading="loading"
+      >
         {{ t('sys.login.loginButton') }}
       </Button>
-      <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
-        {{ t('sys.login.registerButton') }}
-      </Button> -->
     </FormItem>
-    <ARow class="enter-x" :gutter="[16, 16]">
-      <ACol :md="8" :xs="24">
-        <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
-          {{ t('sys.login.mobileSignInFormTitle') }}
-        </Button>
-      </ACol>
-      <ACol :md="8" :xs="24">
-        <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
-          {{ t('sys.login.qrSignInFormTitle') }}
-        </Button>
-      </ACol>
-      <ACol :md="8" :xs="24">
-        <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
-          {{ t('sys.login.registerButton') }}
-        </Button>
+    <ARow class="enter-x">
+      <ACol :span="24"
+        ><div style="color: white; font-size: 16px"
+          >©2024 上海启业信息技术有限公司 91zd.cn 版本:{{ version }}
+        </div>
       </ACol>
     </ARow>
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
 
     <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <GithubFilled />
@@ -78,20 +73,16 @@
       <AlipayCircleFilled />
       <GoogleCircleFilled />
       <TwitterCircleFilled />
-    </div>
+    </div> -->
   </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-  import {
-    GithubFilled,
-    WechatFilled,
-    AlipayCircleFilled,
-    GoogleCircleFilled,
-    TwitterCircleFilled,
-  } from '@ant-design/icons-vue';
+  import { UserOutlined, LockOutlined, GlobalOutlined } from '@ant-design/icons-vue';
+
+  import { Form, Input, Row, Col, Button } from 'ant-design-vue';
+
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '@/hooks/web/useI18n';
@@ -101,6 +92,8 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '@/hooks/web/useDesign';
   //import { onKeyStroke } from '@vueuse/core';
+  import md5 from 'js-md5';
+  import { getSystemVersion } from '@/services/user';
 
   const ACol = Col;
   const ARow = Row;
@@ -116,12 +109,14 @@
 
   const formRef = ref();
   const loading = ref(false);
-  const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    company: '',
+    account: '',
+    password: '',
   });
+
+  const version = ref('');
 
   const { validForm } = useFormValid(formRef);
 
@@ -129,13 +124,18 @@
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
+  getSystemVersion().then((response) => {
+    version.value = response.data;
+  });
+
   async function handleLogin() {
     const data = await validForm();
     if (!data) return;
     try {
       loading.value = true;
       const userInfo = await userStore.login({
-        password: data.password,
+        company: data.company,
+        password: md5(data.password),
         username: data.account,
         mode: 'none', //不要默认的错误提示
       });

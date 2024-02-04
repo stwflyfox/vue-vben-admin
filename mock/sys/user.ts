@@ -50,10 +50,12 @@ export default [
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { username, password } = body;
-      const checkUser = createFakeUserList().find(
-        (item) => item.username === username && password === item.password,
-      );
+      const checkUser = createFakeUserList()[0];
+      // .find(
+      //   (item) => item.username === username && password === item.password,
+      // );
       if (!checkUser) {
         return resultError('Incorrect account or password！');
       }

@@ -16,6 +16,8 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 import { isArray } from '@/utils/is';
 import { h } from 'vue';
+import { setloginInfo, removeloginInfo, setToken, getToken, clearToken } from '@/utils/util';
+import { login as userLogin } from '@/services/user';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -89,19 +91,31 @@ export const useUserStore = defineStore({
       },
     ): Promise<GetUserInfoModel | null> {
       try {
+        debugger;
         const { goHome = true, mode, ...loginParams } = params;
-        const data = await loginApi(loginParams, mode);
-        const { token } = data;
+        const result = await userLogin(loginParams);
 
-        // save token
-        this.setToken(token);
-        return this.afterLoginAction(goHome);
+        if (!result.success) {
+          return Promise.reject(result);
+        } else {
+          const { access_token, loginInfo } = result.data;
+          // save token
+          setToken(access_token);
+          setloginInfo(loginInfo);
+          const data = await loginApi(loginParams, mode);
+          const { token } = data;
+
+          // save token
+          this.setToken(token);
+
+          return this.afterLoginAction(goHome);
+        }
       } catch (error) {
         return Promise.reject(error);
       }
     },
     async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
-      if (!this.getToken) return null;
+      if (!getToken()) return null;
       // get user info
       const userInfo = await this.getUserInfoAction();
 
@@ -150,6 +164,8 @@ export const useUserStore = defineStore({
       this.setToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
+      clearToken();
+      removeloginInfo();
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 

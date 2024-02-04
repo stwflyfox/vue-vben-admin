@@ -1,14 +1,5 @@
 <template>
   <div :class="prefixCls" class="relative w-full h-full px-4">
-    <div class="flex items-center absolute right-4 top-4">
-      <AppDarkModeToggle class="enter-x mr-2" v-if="!sessionTimeout" />
-      <AppLocalePicker
-        class="text-white enter-x xl:text-gray-600"
-        :show-text="false"
-        v-if="!sessionTimeout && showLocale"
-      />
-    </div>
-
     <span class="-enter-x xl:hidden">
       <AppLogo :alwaysShowTitle="true" />
     </span>
@@ -17,19 +8,7 @@
       <div class="flex h-full">
         <div class="hidden min-h-full pl-4 mr-4 xl:flex xl:flex-col xl:w-6/12">
           <AppLogo class="-enter-x" />
-          <div class="my-auto">
-            <img
-              :alt="title"
-              src="../../../assets/svg/login-box-bg.svg"
-              class="w-1/2 -mt-16 -enter-x"
-            />
-            <div class="mt-10 font-medium text-white -enter-x">
-              <span class="inline-block mt-4 text-3xl"> {{ t('sys.login.signInTitle') }}</span>
-            </div>
-            <div class="mt-5 font-normal text-white dark:text-gray-500 -enter-x">
-              {{ t('sys.login.signInDesc') }}
-            </div>
-          </div>
+          <div class="my-auto"> </div>
         </div>
         <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
           <div
@@ -48,7 +27,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { AppDarkModeToggle, AppLocalePicker, AppLogo } from '@/components/Application';
+  import { AppLogo } from '@/components/Application';
   import { useGlobSetting } from '@/hooks/setting';
   import { useDesign } from '@/hooks/web/useDesign';
   import { useI18n } from '@/hooks/web/useI18n';
@@ -77,68 +56,26 @@
   @prefix-cls: ~'@{namespace}-login';
   @logo-prefix-cls: ~'@{namespace}-app-logo';
   @countdown-prefix-cls: ~'@{namespace}-countdown-input';
-  @dark-bg: #293146;
-
-  html[data-theme='dark'] {
-    .@{prefix-cls} {
-      background-color: @dark-bg;
-
-      &::before {
-        background-image: url('@/assets/svg/login-bg-dark.svg');
-      }
-
-      .ant-input,
-      .ant-input-password {
-        background-color: #232a3b;
-      }
-
-      .ant-btn:not(.ant-btn-link, .ant-btn-primary) {
-        border: 1px solid #4a5569;
-      }
-
-      &-form {
-        background: transparent !important;
-      }
-
-      .app-iconify {
-        color: #fff;
-      }
-
-      .ant-divider-inner-text {
-        color: @text-color-secondary;
-      }
-    }
-  }
 
   .@{prefix-cls} {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    left: 0;
+    width: 100%;
+    height: 100%;
     min-height: 100%;
-    overflow: hidden;
-
+    color: white;
+    /* stylelint-disable-next-line order/properties-order */
+    background-image: url('@/assets/images/login.jpg');
+    background-repeat: no-repeat;
+    background-position: 100%;
+    background-size: cover;
     /* stylelint-disable-next-line media-query-no-invalid */
     @media (max-width: @screen-xl) {
-      background-color: #293146;
-
-      .@{prefix-cls}-form {
-        background-color: #fff;
-      }
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      margin-left: -48%;
-      background-image: url('@/assets/svg/login-bg.svg');
-      background-repeat: no-repeat;
-      background-position: 100%;
-      background-size: auto 100%;
-      /* stylelint-disable-next-line media-query-no-invalid */
-      @media (max-width: @screen-xl) {
-        display: none;
-      }
+      display: none;
     }
 
     .@{logo-prefix-cls} {

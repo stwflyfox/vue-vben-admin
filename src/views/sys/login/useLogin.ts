@@ -52,7 +52,7 @@ export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>)
 
 export function useFormRules(formData?: Recordable) {
   const { t } = useI18n();
-
+  const getCompanyFormRule = computed(() => createRule('请输入公司码'));
   const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
   const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
@@ -75,6 +75,7 @@ export function useFormRules(formData?: Recordable) {
   };
 
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
+    const companyFormRule = unref(getCompanyFormRule);
     const accountFormRule = unref(getAccountFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
     const smsFormRule = unref(getSmsFormRule);
@@ -88,6 +89,7 @@ export function useFormRules(formData?: Recordable) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
+          company: companyFormRule,
           account: accountFormRule,
           password: passwordFormRule,
           confirmPassword: [
@@ -111,6 +113,7 @@ export function useFormRules(formData?: Recordable) {
       // login form rules
       default:
         return {
+          company: companyFormRule,
           account: accountFormRule,
           password: passwordFormRule,
         };

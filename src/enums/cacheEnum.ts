@@ -1,5 +1,7 @@
 // token key
-export const TOKEN_KEY = 'TOKEN__';
+export const TOKEN_KEY = 'Service__Token__';
+
+export const LOGIN_INFO_KEY = 'Service__LoginInfo__';
 
 export const LOCALE_KEY = 'LOCALE__';
 
