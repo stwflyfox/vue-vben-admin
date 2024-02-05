@@ -149,7 +149,6 @@ export const useUserStore = defineStore({
     },
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
-      debugger;
       const userInfo = this.getUserInfo;
       const { roles = [] } = userInfo;
       if (isArray(roles)) {
@@ -178,6 +177,7 @@ export const useUserStore = defineStore({
       this.setUserInfo(null);
       clearToken();
       removeloginInfo();
+      this.resetState();
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 

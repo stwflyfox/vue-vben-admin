@@ -119,6 +119,8 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
+  userStore.logout();
+
   const { title } = useGlobSetting();
 
   const { getLoginState } = useLoginState();

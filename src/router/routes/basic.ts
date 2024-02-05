@@ -21,6 +21,7 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
         title: 'ErrorPage',
         hideBreadcrumb: true,
         hideMenu: true,
+        ignoreKeepAlive: true,
       },
     },
   ],
@@ -43,6 +44,7 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
       meta: {
         title: REDIRECT_NAME,
         hideBreadcrumb: true,
+        ignoreKeepAlive: true,
       },
     },
   ],
@@ -57,6 +59,7 @@ export const ERROR_LOG_ROUTE: AppRouteRecordRaw = {
     title: 'ErrorLog',
     hideBreadcrumb: true,
     hideChildrenInMenu: true,
+    ignoreKeepAlive: true,
   },
   children: [
     {
@@ -67,6 +70,7 @@ export const ERROR_LOG_ROUTE: AppRouteRecordRaw = {
         title: t('routes.basic.errorLogList'),
         hideBreadcrumb: true,
         currentActiveMenu: '/error-log',
+        ignoreKeepAlive: true,
       },
     },
   ],

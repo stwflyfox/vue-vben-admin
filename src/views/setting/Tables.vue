@@ -117,7 +117,7 @@
             </FormItem>
             <FormItem
               label="业务表名："
-              :labelCol="{ style: 'width: 120px' }"
+              :labelCol="{ style: 'width: 80px' }"
               :rules="[{ rules: { required: true, message: '请输入业务表名!' } }]"
             >
               <Input
@@ -129,7 +129,7 @@
             </FormItem>
             <FormItem
               label="业务表说明："
-              :labelCol="{ style: 'width: 120px' }"
+              :labelCol="{ style: 'width: 100px' }"
               :rules="[{ required: true, message: '请输入业务表说明!' }]"
             >
               <Input
@@ -141,7 +141,7 @@
             </FormItem>
             <FormItem
               label="是否系统表："
-              :labelCol="{ style: 'width: 120px' }"
+              :labelCol="{ style: 'width: 100px' }"
               :rules="[{ required: true, message: '请选择!' }]"
             >
               <Select style="width: 150px" size="small" v-model:checked="businessForm.is_system">
@@ -154,7 +154,7 @@
                 >
               </Select>
             </FormItem>
-            <FormItem label="备注：" :labelCol="{ style: 'width: 120px' }">
+            <FormItem label="备注：" :labelCol="{ style: 'width: 60px' }">
               <Input
                 placeholder="请输入备注"
                 size="small"
@@ -166,7 +166,7 @@
         </Col>
       </Row>
       <Row>
-        <Col :span="24" style="padding: 0 10px">
+        <Col :span="24" style="padding: 10px 10px 0px 10px">
           <Space>
             <Button type="primary" icon="" size="small" @click="openColumnDialog(null)"
               >添加字段</Button
@@ -504,6 +504,7 @@
       @cancel="dialogDto = false"
       :footer="null"
       :dialog-style="{ top: '50px' }"
+      :body-style="{ padding: '0px 10px 20px 10px' }"
       width="80%"
     >
       <Row>
@@ -518,6 +519,7 @@
           <Button type="primary" icon="" size="small" @click="SearchDtoName">查询</Button>
 
           <Table
+            style="margin-top: 5px"
             :columns="fieldColumns"
             :data-source="DtoList"
             :rowKey="(fieldData) => fieldData.table_name"
@@ -540,6 +542,7 @@
             >
           </Space>
           <Table
+            style="margin-top: 5px"
             :columns="systemColumns"
             :data-source="DtoFieldData"
             :rowKey="(DtoFieldData) => DtoFieldData.field_name"
@@ -567,6 +570,7 @@
       @cancel="dialogScriptForm = false"
       :footer="null"
       :dialog-style="{ top: '100px' }"
+      :body-style="{ padding: '0px 10px 20px 10px' }"
       width="45%"
     >
       <Row>
@@ -582,6 +586,7 @@
       @cancel="dialogCopyDataForm = false"
       @ok="SaveCopyData"
       :dialog-style="{ top: '100px' }"
+      :body-style="{ padding: '0px 10px 20px 10px' }"
       width="400px"
     >
       <Form :form="copyform" layout="inline">
@@ -788,7 +793,7 @@
   ];
 
   export default {
-    name: 'Tables',
+    name: 'businessTables',
     components: {
       Tabs,
       Form,

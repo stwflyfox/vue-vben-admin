@@ -4,7 +4,7 @@ import { LAYOUT } from '@/router/constant';
 
 const about: AppRouteModule = {
   path: '/setting',
-  name: 'Setting',
+  name: 'setting',
   component: LAYOUT,
   redirect: '/setting/businessTables',
   meta: {
@@ -36,8 +36,15 @@ const about: AppRouteModule = {
       component: () => import('@/views/setting/Program.vue'),
       meta: {
         title: '应用程序编辑',
-        hideBreadcrumb: true,
         hideMenu: true,
+      },
+    },
+    {
+      path: 'form',
+      name: 'form',
+      component: () => import('@/views/setting/Form.vue'),
+      meta: {
+        title: '表单',
       },
     },
   ],

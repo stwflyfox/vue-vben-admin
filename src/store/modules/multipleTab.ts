@@ -65,6 +65,8 @@ export const useMultipleTabStore = defineStore({
     async updateCacheTab() {
       const cacheMap: Set<string> = new Set();
 
+      debugger
+
       for (const tab of this.tabList) {
         const item = getRawRoute(tab);
         // Ignore the cache

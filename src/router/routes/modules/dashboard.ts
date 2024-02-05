@@ -21,6 +21,7 @@ const dashboard: AppRouteModule = {
       component: () => import('@/views/dashboard/workbench/index.vue'),
       meta: {
         title: t('routes.dashboard.workbench'),
+        ignoreKeepAlive: true,
       },
     },
   ],

@@ -34,6 +34,7 @@ export const LoginRoute: AppRouteRecordRaw = {
   component: () => import('@/views/sys/login/Login.vue'),
   meta: {
     title: t('routes.basic.login'),
+    ignoreKeepAlive: true,
   },
 };
 
